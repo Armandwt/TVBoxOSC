@@ -42,6 +42,7 @@ import com.github.tvbox.osc.ui.tv.widget.ViewObj;
 import com.github.tvbox.osc.util.AppManager;
 import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.orhanobut.hawk.Hawk;
@@ -64,6 +65,7 @@ public class HomeActivity extends BaseActivity {
     private LinearLayout topLayout;
     private LinearLayout contentLayout;
     private TextView tvDate;
+    private TextView tvBack;
     private TvRecyclerView mGridView;
     private NoScrollViewPager mViewPager;
     private SourceViewModel sourceViewModel;
@@ -111,9 +113,30 @@ public class HomeActivity extends BaseActivity {
         initData();
     }
 
+    private Runnable mTimeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Toast.makeText(HomeActivity.this, "加载超时，请检查配置地址", Toast.LENGTH_LONG).show();
+            jumpToSetting();
+        }
+    };
+
+    private void jumpToSetting() {
+        mHandler.removeCallbacks(mTimeoutRunnable);
+        AppManager.getInstance().finishAllActivity();
+        jumpActivity(SettingActivity.class);
+    }
+
     private void initView() {
         this.topLayout = findViewById(R.id.topLayout);
         this.tvDate = findViewById(R.id.tvDate);
+        this.tvBack = findViewById(R.id.tvBack);
+        this.tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToSetting();
+            }
+        });
         this.contentLayout = findViewById(R.id.contentLayout);
         this.mGridView = findViewById(R.id.mGridView);
         this.mViewPager = findViewById(R.id.mViewPager);
@@ -395,6 +418,26 @@ public class HomeActivity extends BaseActivity {
             mExitTime = System.currentTimeMillis();
             Toast.makeText(mContext, "再按一次返回键退出应用", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void showLoading() {
+        super.showLoading();
+        if (tvBack != null) {
+            tvBack.setVisibility(View.VISIBLE);
+        }
+        mHandler.removeCallbacks(mTimeoutRunnable);
+        int timeout = Hawk.get(HawkConfig.LOADING_TIMEOUT, 15);
+        mHandler.postDelayed(mTimeoutRunnable, timeout * 1000L);
+    }
+
+    @Override
+    protected void showSuccess() {
+        super.showSuccess();
+        if (tvBack != null) {
+            tvBack.setVisibility(View.GONE);
+        }
+        mHandler.removeCallbacks(mTimeoutRunnable);
     }
 
     @Override

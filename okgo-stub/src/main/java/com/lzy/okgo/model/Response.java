@@ -8,7 +8,15 @@ public class Response<T> {
         return body;
     }
 
+    public void setBody(T body) {
+        this.body = body;
+    }
+
     public Throwable getException() {
         return exception;
+    }
+
+    public void setException(Throwable exception) {
+        this.exception = exception;
     }
 }

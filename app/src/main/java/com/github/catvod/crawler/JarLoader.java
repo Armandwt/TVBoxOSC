@@ -3,8 +3,6 @@ package com.github.catvod.crawler;
 import android.content.Context;
 
 import com.github.tvbox.osc.base.App;
-import com.github.tvbox.osc.util.HawkConfig;
-import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONObject;
 
@@ -42,10 +40,8 @@ public class JarLoader {
                 try {
                     Class classInit = classLoader.loadClass("com.github.catvod.spider.Init");
                     if (classInit != null) {
-                        if (!Hawk.get(HawkConfig.SKIP_JAR_INIT, true)) {
-                            Method method = classInit.getMethod("init", Context.class);
-                            method.invoke(null, App.getInstance());
-                        }
+                        Method method = classInit.getMethod("init", Context.class);
+                        method.invoke(null, App.getInstance());
                         System.out.println("自定义爬虫代码加载成功!");
                         success = true;
                         try {

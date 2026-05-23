@@ -45,6 +45,21 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/ts_28"
             tools:text="111111111111111" />
+
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/vs_20"
+            android:layout_marginStart="@dimen/vs_20"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:text="返回"
+            android:textColor="#FFFF4444"
+            android:textSize="@dimen/ts_28"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

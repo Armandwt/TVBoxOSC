@@ -26,5 +26,5 @@ public class HawkConfig {
     public static final String LIVE_CONNECT_TIMEOUT = "live_connect_timeout";
     public static final String LIVE_SHOW_NET_SPEED = "live_show_net_speed";
     public static final String LIVE_SHOW_TIME = "live_show_time";
-    public static final String SKIP_JAR_INIT = "skip_jar_init"; // true 跳过jar Init调用
+    public static final String LOADING_TIMEOUT = "loading_timeout"; // 配置加载超时时间(秒)，默认15
 }

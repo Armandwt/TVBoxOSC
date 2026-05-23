@@ -53,7 +53,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvDns;
     private TextView tvHomeRec;
     private TextView tvSearchView;
-    private TextView tvSkipJarInit;
+    private TextView tvLoadingTimeout;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -81,10 +81,10 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvDns = findViewById(R.id.tvDns);
         tvHomeRec = findViewById(R.id.tvHomeRec);
         tvSearchView = findViewById(R.id.tvSearchView);
-        tvSkipJarInit = findViewById(R.id.tvSkipJarInit);
+        tvLoadingTimeout = findViewById(R.id.tvLoadingTimeout);
         tvMediaCodec.setText(Hawk.get(HawkConfig.IJK_CODEC, ""));
+        tvLoadingTimeout.setText(Hawk.get(HawkConfig.LOADING_TIMEOUT, 15) + "秒");
         tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
-        tvSkipJarInit.setText(Hawk.get(HawkConfig.SKIP_JAR_INIT, true) ? "已打开" : "已关闭");
         tvParseWebView.setText(Hawk.get(HawkConfig.PARSE_WEBVIEW, true) ? "系统自带" : "XWalkView");
         tvApi.setText(Hawk.get(HawkConfig.API_URL, ""));
         tvDns.setText(OkGoHelper.dnsHttpsList.get(Hawk.get(HawkConfig.DOH_URL, 0)));
@@ -102,12 +102,50 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
             }
         });
-        findViewById(R.id.llSkipJarInit).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.llLoadingTimeout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FastClickCheckUtil.check(v);
-                Hawk.put(HawkConfig.SKIP_JAR_INIT, !Hawk.get(HawkConfig.SKIP_JAR_INIT, true));
-                tvSkipJarInit.setText(Hawk.get(HawkConfig.SKIP_JAR_INIT, true) ? "已打开" : "已关闭");
+                List<String> timeouts = new ArrayList<>();
+                timeouts.add("5秒");
+                timeouts.add("10秒");
+                timeouts.add("15秒");
+                timeouts.add("20秒");
+                timeouts.add("30秒");
+                int[] values = {5, 10, 15, 20, 30};
+                int current = Hawk.get(HawkConfig.LOADING_TIMEOUT, 15);
+                int select = 2;
+                for (int i = 0; i < values.length; i++) {
+                    if (values[i] == current) {
+                        select = i;
+                        break;
+                    }
+                }
+                SelectDialog<String> dialog = new SelectDialog<>(mActivity);
+                dialog.setTip("请选择加载超时时间");
+                dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<String>() {
+                    @Override
+                    public void click(String value, int pos) {
+                        Hawk.put(HawkConfig.LOADING_TIMEOUT, values[pos]);
+                        tvLoadingTimeout.setText(value);
+                    }
+
+                    @Override
+                    public String getDisplay(String val) {
+                        return val;
+                    }
+                }, new DiffUtil.ItemCallback<String>() {
+                    @Override
+                    public boolean areItemsTheSame(@NonNull @NotNull String oldItem, @NonNull @NotNull String newItem) {
+                        return oldItem.equals(newItem);
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(@NonNull @NotNull String oldItem, @NonNull @NotNull String newItem) {
+                        return oldItem.equals(newItem);
+                    }
+                }, timeouts, select);
+                dialog.show();
             }
         });
         findViewById(R.id.llParseWebVew).setOnClickListener(new View.OnClickListener() {

@@ -2,7 +2,9 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,20 +58,21 @@ public class ApiDialog extends BaseDialog {
         tvAddress = findViewById(R.id.tvAddress);
         inputApi = findViewById(R.id.input);
         inputApi.setText(Hawk.get(HawkConfig.API_URL, ""));
+        inputApi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO
+                        || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                    submitApi();
+                    return true;
+                }
+                return false;
+            }
+        });
         findViewById(R.id.inputSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newApi = inputApi.getText().toString().trim();
-                if (!newApi.isEmpty() && (newApi.startsWith("http") || newApi.startsWith("clan"))) {
-                    ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
-                    if (!history.contains(newApi))
-                        history.add(0, newApi);
-                    if (history.size() > 10)
-                        history.remove(10);
-                    Hawk.put(HawkConfig.API_HISTORY, history);
-                    listener.onchange(newApi);
-                    dismiss();
-                }
+                submitApi();
             }
         });
         findViewById(R.id.apiHistory).setOnClickListener(new View.OnClickListener() {
@@ -136,6 +139,27 @@ public class ApiDialog extends BaseDialog {
         String address = ControlManager.get().getAddress(false);
         tvAddress.setText(String.format("手机/电脑扫描上方二维码或者直接浏览器访问地址\n%s", address));
         ivQRCode.setImageBitmap(QRCodeGen.generateBitmap(address, AutoSizeUtils.mm2px(getContext(), 300), AutoSizeUtils.mm2px(getContext(), 300)));
+    }
+
+    private void submitApi() {
+        String newApi = inputApi.getText().toString().trim();
+        if (newApi.isEmpty()) {
+            Toast.makeText(getContext(), "请输入配置地址", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!newApi.startsWith("http") && !newApi.startsWith("clan")) {
+            Toast.makeText(getContext(), "配置地址须以http或clan开头", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
+        if (!history.contains(newApi))
+            history.add(0, newApi);
+        if (history.size() > 10)
+            history.remove(10);
+        Hawk.put(HawkConfig.API_HISTORY, history);
+        if (listener != null)
+            listener.onchange(newApi);
+        dismiss();
     }
 
     public void setOnListener(OnListener listener) {

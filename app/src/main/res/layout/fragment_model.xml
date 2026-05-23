@@ -67,7 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llSkipJarInit"
+                android:id="@+id/llLoadingTimeout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/vs_50"
                 android:layout_marginBottom="@dimen/vs_10"
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="跳过Jar初始化"
+                    android:text="加载超时时间"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/ts_24" />
 
@@ -91,10 +91,10 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/tvSkipJarInit"
+                    android:id="@+id/tvLoadingTimeout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="已打开"
+                    android:text="15秒"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/ts_24" />
 
