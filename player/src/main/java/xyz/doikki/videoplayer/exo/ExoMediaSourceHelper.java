@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
-import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
+//import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -74,7 +74,7 @@ public final class ExoMediaSourceHelper {
     public MediaSource getMediaSource(String uri, Map<String, String> headers, boolean isCache) {
         Uri contentUri = Uri.parse(uri);
         if ("rtmp".equals(contentUri.getScheme())) {
-            return new ProgressiveMediaSource.Factory(new RtmpDataSourceFactory(null))
+            return new ProgressiveMediaSource.Factory(getDataSourceFactory())
                     .createMediaSource(MediaItem.fromUri(contentUri));
         } else if ("rtsp".equals(contentUri.getScheme())) {
             return new RtspMediaSource.Factory().createMediaSource(MediaItem.fromUri(contentUri));

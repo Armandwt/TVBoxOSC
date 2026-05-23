@@ -53,6 +53,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvDns;
     private TextView tvHomeRec;
     private TextView tvSearchView;
+    private TextView tvSkipJarInit;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -80,8 +81,10 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvDns = findViewById(R.id.tvDns);
         tvHomeRec = findViewById(R.id.tvHomeRec);
         tvSearchView = findViewById(R.id.tvSearchView);
+        tvSkipJarInit = findViewById(R.id.tvSkipJarInit);
         tvMediaCodec.setText(Hawk.get(HawkConfig.IJK_CODEC, ""));
         tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
+        tvSkipJarInit.setText(Hawk.get(HawkConfig.SKIP_JAR_INIT, true) ? "已打开" : "已关闭");
         tvParseWebView.setText(Hawk.get(HawkConfig.PARSE_WEBVIEW, true) ? "系统自带" : "XWalkView");
         tvApi.setText(Hawk.get(HawkConfig.API_URL, ""));
         tvDns.setText(OkGoHelper.dnsHttpsList.get(Hawk.get(HawkConfig.DOH_URL, 0)));
@@ -97,6 +100,14 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 FastClickCheckUtil.check(v);
                 Hawk.put(HawkConfig.DEBUG_OPEN, !Hawk.get(HawkConfig.DEBUG_OPEN, false));
                 tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
+            }
+        });
+        findViewById(R.id.llSkipJarInit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FastClickCheckUtil.check(v);
+                Hawk.put(HawkConfig.SKIP_JAR_INIT, !Hawk.get(HawkConfig.SKIP_JAR_INIT, true));
+                tvSkipJarInit.setText(Hawk.get(HawkConfig.SKIP_JAR_INIT, true) ? "已打开" : "已关闭");
             }
         });
         findViewById(R.id.llParseWebVew).setOnClickListener(new View.OnClickListener() {

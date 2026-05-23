@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TvRecyclerView">
+        <attr name="tv_verticalSpacingWithMargins" format="dimension"/>
+        <attr name="tv_horizontalSpacingWithMargins" format="dimension"/>
+        <attr name="tv_selectedItemIsCentered" format="boolean"/>
+        <attr name="tv_isMenu" format="boolean"/>
+        <attr name="tv_scrollMode" format="integer"/>
+        <attr name="tv_layoutManager" format="string"/>
+    </declare-styleable>
+</resources>

@@ -1,3 +1,6 @@
 rootProject.name = "TVBox"
 include ':app'
 include ':player'
+include ':xwalk-stub'
+include ':tvrecyclerview-stub'
+include ':okgo-stub'

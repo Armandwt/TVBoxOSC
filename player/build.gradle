@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.github.tvbox.osc.player'
     compileSdkVersion 30
 
     defaultConfig {
@@ -39,7 +40,7 @@ dependencies {
     api "com.google.android.exoplayer:exoplayer-dash:2.14.2"
     api "com.google.android.exoplayer:exoplayer-hls:2.14.2"
     api "com.google.android.exoplayer:exoplayer-rtsp:2.14.2"
-    api "com.google.android.exoplayer:extension-rtmp:2.14.2"
+    //api "com.google.android.exoplayer:extension-rtmp:2.14.2"
     api "com.google.android.exoplayer:extension-okhttp:2.14.2"
     api 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.5'
 }
